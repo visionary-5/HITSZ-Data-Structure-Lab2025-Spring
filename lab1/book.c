@@ -50,7 +50,8 @@ int DeleteBook(Node **head, char bookId[]) {
     Node *temp = *head;
     Node *prev = NULL;
     if (strcmp(temp->book.bookId, bookId) == 0) {
-        *head = temp->next;  
+        *head = temp->next; 
+        printf("图书%s删除成功！\n",temp->book.bookId); 
         free(temp);          
         return 1;            
     }
@@ -62,6 +63,7 @@ int DeleteBook(Node **head, char bookId[]) {
     if(temp == NULL)
         return 0;   
     prev->next = temp->next;
+    printf("图书%s删除成功！\n",temp->book.bookId);
     free(temp);
     return 1;
 }
@@ -78,6 +80,7 @@ int UpdateStock(Node *head, char bookId[], int newStock) {
         if(strcmp(head->book.bookId, bookId) == 0)
         {
             head->book.stock = newStock;
+            printf("图书%s的库存数量已修改为%d！\n",head->book.bookId,head->book.stock);
             return 1;
         }
         head = head->next;
@@ -87,10 +90,15 @@ int UpdateStock(Node *head, char bookId[], int newStock) {
 
 // 根据书号查找图书信息
 Node* FindBook(Node *head, char bookId[]) {
+    printf("查找的图书信息：\n");
     while (head != NULL)
     {
         if(strcmp(head->book.bookId, bookId) == 0)
-            return head; 
+        {
+            printf("书号：%s,书名：%s,作者：%s,库存：%d\n",
+                head->book.bookId, head->book.title, head->book.author, head->book.stock);
+            return head;
+        } 
         head = head->next;
     }
     return NULL;
@@ -100,7 +108,7 @@ Node* FindBook(Node *head, char bookId[]) {
 void TraverseList(Node *head) {
     printf("图书列表：\n");
     while (head != NULL) {
-        printf("书号：%s, 书名：%s, 作者：%s, 库存：%d\n",
+        printf("书号：%s,书名：%s,作者：%s,库存：%d\n",
                head->book.bookId, head->book.title, head->book.author, head->book.stock);
         head = head->next;  
 }
