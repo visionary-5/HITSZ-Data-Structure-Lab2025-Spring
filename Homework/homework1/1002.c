@@ -32,8 +32,13 @@ void InitStack(Stack *s)
  */
 int Push(Stack *s, DataType e)
 {
-    //todo
-
+    if(s->top == MaxSize -1)
+        return 0;
+    else
+    {
+        s -> data[++s->top] = e;
+        return 1;
+    }
 }
 
 /**
@@ -44,8 +49,16 @@ int Push(Stack *s, DataType e)
  */
 int Pop(Stack *S, DataType *e)
 {
-    //todo
-
+    if(S == NULL)
+        return 0;
+    if(StackEmpty(*S))
+        return 0;
+    else
+    {
+        *e = S->data[S->top];
+        S->top --;
+        return 1;
+    }  
 }
 
 /**
@@ -56,8 +69,13 @@ int Pop(Stack *S, DataType *e)
  */
 int GetTop(Stack S, DataType *e)
 {
-    //todo
-
+    if(StackEmpty(S))
+        return 0;
+    else
+    {
+        *e = S.data[S.top];
+        return 1;
+    }
 }
 
 /**
@@ -67,8 +85,7 @@ int GetTop(Stack S, DataType *e)
  */
 int StackEmpty(Stack S)
 {
-    //todo
-
+    return S.top == -1;
 }
 
 /**

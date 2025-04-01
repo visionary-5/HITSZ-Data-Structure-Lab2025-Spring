@@ -44,8 +44,13 @@ void InitStack(Stack *s)
  */
 int Push(Stack *s, DataType e)
 {
-    //todo
-
+    if(s->top == MaxSize -1)
+        return 0;
+    else
+    {
+        s -> data[++s->top] = e;
+        return 1;
+    }
 }
 
 /**
@@ -56,9 +61,18 @@ int Push(Stack *s, DataType e)
  */
 int Pop(Stack *S, DataType *e)
 {
-    //todo
+    if(S == NULL)
+        return 0;
+    if(StackEmpty(*S))
+        return 0;
+    else
+    {
+        *e = S->data[S->top];
+        S->top --;
+        return 1;
+    }  
+}  
 
-}
 
 /**
  * 获取栈顶元素，不删除该元素
@@ -68,8 +82,13 @@ int Pop(Stack *S, DataType *e)
  */
 int GetTop(Stack S, DataType *e)
 {
-    //todo
-
+    if(StackEmpty(S))
+        return 0;
+    else
+    {
+        *e = S.data[S.top];
+        return 1;
+    }
 }
 
 /**
@@ -79,9 +98,9 @@ int GetTop(Stack S, DataType *e)
  */
 int StackEmpty(Stack S)
 {
-    //todo
-
+    return S.top == -1;
 }
+
 
 /**
  * 获取栈的一个数组拷贝
@@ -127,8 +146,19 @@ void InitQueue(Queue *Q)
  */
 int GetHead(Queue Q, DataType *e)
 {
-    //todo
-
+    if (!StackEmpty(*Q.stack_out)) {
+        return GetTop(*Q.stack_out, e);
+    } else {
+        if (StackEmpty(*Q.stack_in)) {
+            return 0;
+        } else {
+            DataType temp;
+            while (Pop(Q.stack_in, &temp)) {
+                Push(Q.stack_out, temp);
+            }
+            return GetTop(*Q.stack_out, e);
+        }
+    }
 }
 
 /**
@@ -138,8 +168,7 @@ int GetHead(Queue Q, DataType *e)
  */
 int QueueEmpty(Queue Q)
 {
-    //todo
-
+    return StackEmpty(*Q.stack_in) && StackEmpty(*Q.stack_out);
 }
 
 /**
@@ -150,8 +179,21 @@ int QueueEmpty(Queue Q)
  */
 int EnQueue(Queue *Q, DataType e)
 {
-    //todo
-
+    if (Q->stack_in->top < MaxSize - 1) {
+        Push(Q->stack_in, e);
+        return 1;
+    } else {
+        if (StackEmpty(*Q->stack_out)) {
+            DataType temp;
+            while (Pop(Q->stack_in, &temp)) {
+                Push(Q->stack_out, temp);
+            }
+            Push(Q->stack_in, e);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
 
 /**
@@ -162,8 +204,19 @@ int EnQueue(Queue *Q, DataType e)
  */
 int DeQueue(Queue *Q, DataType *e)
 {
-    //todo
-
+    if (!StackEmpty(*Q->stack_out)) {
+        return Pop(Q->stack_out, e);
+    } else {
+        if (StackEmpty(*Q->stack_in)) {
+            return 0;
+        } else {
+            DataType temp;
+            while (Pop(Q->stack_in, &temp)) {
+                Push(Q->stack_out, temp);
+            }
+            return Pop(Q->stack_out, e);
+        }
+    }
 }
 
 /**
@@ -193,8 +246,12 @@ int QueueLength(Queue Q)
  */
 void QueueToArray(Queue Q, DataType *seq)
 {
-    //todo
-
+    int out_len = StackLength(*Q.stack_out);
+    StackToArray(*Q.stack_out, seq);
+    int in_len = StackLength(*Q.stack_in);
+    for (int i = 0; i < in_len; i++) {
+        seq[out_len + i] = Q.stack_in->data[i];
+    }
 }
 
 void outputStack(Stack *S)
